@@ -21,26 +21,26 @@ public class UserEntity {
     @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     private Long userId;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "phone", nullable = false, unique = true)
+    @Column(name = "phone", unique = true)
     private String phone;
 
-    @Column(name = "user_role", nullable = false)
+    @Column(name = "user_role")
     private String userRole;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 

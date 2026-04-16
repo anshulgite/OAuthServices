@@ -1,2 +1,6 @@
 # Project exclude paths
 /OAuthService/target/
+
+# Environment variables
+.env
+*.env

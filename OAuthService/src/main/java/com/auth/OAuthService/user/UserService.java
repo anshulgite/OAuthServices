@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserInterface {
@@ -66,7 +67,7 @@ public class UserService implements UserInterface {
     public UserEntity updateUser(UserEntity user) {
         if (user.getUserId() == null || user.getUserId() <= 0)
             throw new RuntimeException("Invalid user id");
-        return saveUser(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -80,6 +81,11 @@ public class UserService implements UserInterface {
         } else {
             throw new RuntimeException("user not exist");
         }
+    }
+
+    @Override
+    public Optional<UserEntity> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 //    @Override

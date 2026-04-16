@@ -1,10 +1,14 @@
 package com.auth.OAuthService.user;
 
 import com.auth.OAuthService.common.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
+@Slf4j
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -75,6 +79,18 @@ public class UserController {
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/update-mobile")
+    public ApiResponse<String> updateMobile(@RequestParam String mobile, Principal principal) {
+        // Principal se current logged-in user ka email milega
+        String email = principal.getName();
+        UserEntity user = userService.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        log.info("User found : {}", user);
+        user.setPhone(mobile);
+        userService.updateUser(user);
+
+        return ApiResponse.success("Mobile number updated successfully!");
     }
 
 //    @PreAuthorize("hasRole('ADMIN')")
