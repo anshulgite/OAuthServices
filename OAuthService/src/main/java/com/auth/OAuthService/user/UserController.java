@@ -3,6 +3,7 @@ package com.auth.OAuthService.user;
 import com.auth.OAuthService.common.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -82,6 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/update-mobile")
+    @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<String> updateMobile(@RequestParam String mobile, Principal principal) {
         // Principal se current logged-in user ka email milega
         String email = principal.getName();

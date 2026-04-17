@@ -24,10 +24,11 @@ public class CustomUserDetailsService extends DefaultOAuth2UserService {
         String name = oAuth2User.getAttribute("name");
 
         // Check karna ki user DB mein hai ya nahi
-        userRepo.findByEmail(email).orElseGet(() -> {
+        UserEntity user = userRepo.findByEmail(email).orElseGet(() -> {
             UserEntity newUser = new UserEntity();
             newUser.setEmail(email);
             newUser.setUsername(name);
+            newUser.setUserRole("ROLE_USER");
             return userRepo.save(newUser);
         });
 

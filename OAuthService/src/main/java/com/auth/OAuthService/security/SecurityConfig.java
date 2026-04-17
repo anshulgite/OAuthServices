@@ -4,6 +4,8 @@ package com.auth.OAuthService.security;
 import com.auth.OAuthService.auth.CustomUserDetailsService;
 import com.auth.OAuthService.auth.JwtFilter;
 import com.auth.OAuthService.auth.JwtUtils;
+import com.auth.OAuthService.user.UserEntity;
+import com.auth.OAuthService.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,8 @@ public class SecurityConfig {
     private JwtUtils jwtUtils;
     @Autowired
     private JwtFilter jwtFilter;
+    @Autowired
+    private UserRepository userRepo;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,7 +58,8 @@ public class SecurityConfig {
                             // यहाँ अपना JWT जनरेट करें
                             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
                             String email = oAuth2User.getAttribute("email"); // या OAuth2User से ईमेल निकालें
-                            String token = jwtUtils.generateToken(email);
+                            UserEntity user = userRepo.findByEmail(email).orElseThrow();
+                            String token = jwtUtils.generateToken(email, user.getUserRole());
 
                             // अब टोकन के साथ React पर भेजें
                             response.sendRedirect("http://localhost:3000/dashboard?token=" + token);
